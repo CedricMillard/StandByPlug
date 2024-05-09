@@ -15,7 +15,7 @@
 #define DELAY_OFF 900000 //ms = 15 minutes
 #define LED_FREQ 1000 //ms
 //#define FREQ_ACQUISITION 270000 //ms  => setup cycle = 18 heures
-#define FREQ_ACQUISITION 120000 //ms  => setup cycle = 8 heures
+#define FREQ_ACQUISITION 90000 //ms  => setup cycle = 6 heures
 
 #define MODE_VEILLE 1
 #define MODE_ON 2
@@ -189,8 +189,10 @@ void loop() {
       
       if(Mode==MODE_OFF) 
       {
+        //To initiate the relay in the right state
         if(digitalRead(pinBouton)==LOW){
           SaveStateRelay();
+          relay.SetStatus(!relay.GetStatus());
           relay.Switch();
           //Wait for button is released
           while (digitalRead(pinBouton)==LOW) delay(100);
@@ -213,6 +215,7 @@ void loop() {
         else if (millis()-offStartTime>120000)
         {
           SaveStateRelay();
+          relay.SetStatus(!relay.GetStatus());
           relay.Switch();
           delay(65000);
         }
